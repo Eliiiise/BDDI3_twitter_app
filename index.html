@@ -4,14 +4,19 @@
 		<meta charset="UTF-8" />
 		<title>Twitter App</title>
 		<script>
-			 console.log('html')
-
 			 const socket = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`);
 
 			 socket.addEventListener('message', async function (event) {
-				 const data = await event.data.text()
-
-				 console.log('message from server: ', data)
+				 try{
+					 let data = await event.data.text()
+					 data = JSON.parse(data)
+					 const love = document.querySelector('.js-love')
+					 love.innerHTML = data.love
+					 const hate = document.querySelector('.js-hate')
+					 hate.innerHTML = data.hate
+					 console.log("server message: ", data)
+				 } catch(err){
+				 }
 			 });
 
 			 socket.addEventListener('open', function (event) {
@@ -21,7 +26,14 @@
 		</script>
 	</head>
 	<body>
-		<h1>Hello</h1>
-		<p>blablabla</p>
+		<h1>love VS hate</h1>
+		<div>
+			<h3>Love</h3>
+			<p class="js-love">0</p>
+		</div>
+		<div>
+			<h3>Hate</h3>
+			<p class="js-hate">0</p>
+		</div>
 	</body>
 </html>

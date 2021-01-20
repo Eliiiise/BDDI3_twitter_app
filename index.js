@@ -1,46 +1,65 @@
-require('dotenv').config()
+require("dotenv").config()
 
-const { pipeline } = require('stream')
-const server = require('./server')
-const {connectToTwitter, tweetStream} = require('./twitter')
-const {jsonParser, logger} = require('./process-tweets')
-const WebSocket = require('ws')
+const { pipeline } = require("stream")
+const WebSocket = require("ws")
+const  server  = require("./server")
+const {connectToTwitter, tweetStream} = require("./twitter")
+const {jsonParser, textExtractor, textSelector, initCounter } = require("./process-tweets")
+const { getSearchRules, addSearchRules, deleteSearchRules} = require('./search-rules')
 
 
-// server http
 server.listen(3000)
 const wsServer = new WebSocket.Server({ server })
 
-wsServer.on('connection', (client) => {
-    console.log("new connection: ", client)
+wsServer.on("connection", (client) => {
+    console.log('new connection: ', client)
 
-    client.on('message', (message) => {
-        console.log('message from client: ', message)
-
-        client.send('hello from server')
+    client.on("message", (message) => {
+        console.log("message from client: ", message)
+        client.send('Hello from server')
     })
 
-    tweetStream.on('data', (chunk) => {
-        client.send(chunk)
+    const tweetCounter = initCounter()
+
+    const socketStream = WebSocket.createWebSocketStream(client)
+
+    pipeline(
+        tweetStream,
+        jsonParser,
+        // textExtractor,
+        // textSelector,
+        tweetCounter,
+        socketStream,
+        (err) => {
+            if (err) {
+                console.error("pieline error: ", err)
+            }
+        }
+    )
+
+    client.on("close", () => {
+        socketStream.end()
     })
 })
 
-// connexion API Twitter
- connectToTwitter()
 
-// traiter les tweets (via transform)
-pipeline(
-    tweetStream,
-    jsonParser,
-    logger,
-    (err) => {
-        if (err) {
-            console.error('pieline error: ', err)
-        }
+connectToTwitter()
+
+async function resetRules() {
+    const existingRules = await getSearchRules();
+    const ids = existingRules?.data?.map(rule => rule.id)
+
+    if(ids) {
+        await deleteSearchRules(ids)
     }
-)
 
-// envoyer des données au client via websocket
-// const wsServer = new WebSocket.Server({
-// server
-// })
+    await addSearchRules([
+        { value: "love", tag: "love"},
+        { value: "hate", tag: "hate"}
+    ])
+
+    return Promise.resolve()
+}
+
+resetRules()
+
