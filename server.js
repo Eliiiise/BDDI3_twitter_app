@@ -1,37 +1,18 @@
-const { createServer } = require("http")
-const fsPromise = require("fs/promises")
+const { createServer } = require('http')
+const fs = require('fs/promises')
 
 const server = createServer()
 
-server.on("request", (request, response) => {
-    console.log("on request", request.method, request.url)
+server.on('request', async (request, response) => {
+    console.log('on request', request.method, request.url)
 
-    if (request.url === "/") {
+    if (request.url === '/') {
+        const file = await fs.readFile('./index.html', 'utf8')
         response.writeHead(200)
-
-        /*fs.readFile("./test.txt", "utf8", (err, data) => {
-            if(err) {
-                console.error(err)
-                response.end(err)
-                return
-            }
-            response.end(data)
-        })*/
-
-        const htmlFile = fsPromise.readFile("./htmlFile.txt", "utf8")
-
-        htmlFile
-            .then((data) => {
-                response.end(data)
-            })
-            .catch((err) => {
-                response.end(err)
-            })
-
-
+        response.end(file)
     } else {
         response.writeHead(404)
-        response.end("Error 404")
+        response.end()
     }
 })
 
