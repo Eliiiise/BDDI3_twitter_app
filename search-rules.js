@@ -8,12 +8,13 @@ const options =  {
     }
 }
 
-async function getSearchRules() {
+async function getSearchRules(){
     const response = await needle('get', TWT_API_URL , options)
+    console.log('get search rules : ', response.body)
     return response.body
 }
 
-async function deleteSearchRules(ids) {
+async function deleteSearchRules(ids){
     const data = {
         delete: {
             ids
@@ -23,12 +24,12 @@ async function deleteSearchRules(ids) {
     console.log("delete rules :", response.body)
 }
 
-async function addSearchRules(rules) {
+async function addSearchRules(rules){
     const data = {
         add: rules
     }
     const response = await needle('post', TWT_API_URL, data, options)
-    console.log("add rules :", response.body)
+    console.log("add rules :", response.body, "option : ", data)
 }
 
 module.exports = {

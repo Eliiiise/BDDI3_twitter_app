@@ -20,7 +20,7 @@ function initCounter() {
         writableObjectMode: true,
 
         transform(chunk, _, callback) {
-            console.log('chunck : ', chunk)
+            // console.log('chunk : ', chunk)
 
             if (chunk.matching_rules) {
                 switch (chunk.matching_rules[0].tag) {
@@ -35,7 +35,7 @@ function initCounter() {
 
             this.counter ++
 
-            console.log('love : ', this.counterLove, '   |    hate : ', this.counterHate)
+            // console.log('love : ', this.counterLove, '   |    hate : ', this.counterHate)
 
             const counters = {
                 'love': this.counterLove,
@@ -99,23 +99,8 @@ const textSelector = new Transform({
     }
 })
 
-// faire les traitements avec transform
-
-const logger = new Writable({
-    objectMode: true,
-    write(chunk, encoding, callback) {
-        try {
-            console.log(JSON.stringify(chunk))
-        } catch (err) {
-            //
-        }
-        callback()
-    }
-})
-
 module.exports = {
     jsonParser,
-    logger,
     textExtractor,
     initCounter,
     textSelector

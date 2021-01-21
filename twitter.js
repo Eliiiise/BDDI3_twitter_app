@@ -1,14 +1,15 @@
-const { Readable, Writable } = require('stream')
-const http = require('https')
+const http = require("https")
+const { Writable, Readable, pipeline, Transform } = require("stream")
 
-const TWT_API_HOST = 'api.twitter.com'
-const TWT_API_SEARCH_PATH = "/2/tweets/search/stream?tweet.fields=attachments,author_id,geo,entities&expansions=author_id,attachments.media_keys&media.fields=url&user.fields=public_metrics"
+const TWT_API_HOST = "api.twitter.com"
+const TWT_API_SEARCH_PATH = "/2/tweets/search/stream?tweet.fields=attachments&expansions=attachments.media_keys&media.fields=url"
 const BEARER_TOKEN = process.env.TWT_BEARER_TOKEN
 
 const options = {
     host: TWT_API_HOST,
     headers: {
-        Authorization: 'Bearer ' + BEARER_TOKEN
+        "Content-type": "application/json",
+        Authorization: "Bearer " + BEARER_TOKEN
     }
 }
 
@@ -16,11 +17,11 @@ const tweetStream = new Readable({
     read() { }
 })
 
- function connectToTwitter() {
+function connectToTwitter() {
     const opts = {
         ...options,
-        method: 'GET',
         path: TWT_API_SEARCH_PATH,
+        method: "GET",
     }
 
     const req = http.request(opts, (res) => {
@@ -38,5 +39,5 @@ const tweetStream = new Readable({
 
 module.exports = {
     tweetStream,
-    connectToTwitter
+    connectToTwitter,
 }
