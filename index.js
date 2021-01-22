@@ -20,35 +20,39 @@ const broadcaster = new PassThrough({
 wsServer.on("connection", (client) => {
     // console.log('new connection: ', client)
 
-    let listWorld
+    let listWords = Array(3)
 
     // create a new readable stream of tweets for this client
     const tweetSource = getTweetFromSource(broadcaster)
 
     client.on("message", (message) => {
-        console.log("message from client: ", message)
-        client.send('Hello from server')
+        // console.log("message from client: ", message)
+        // client.send('Hello from server')
 
-        listWorld = message
+        message = message.split(',')
+
+        for (let i = 0; i < message.length; i++) {
+            listWords[i]  = message[i]
+        }
     })
 
     const tweetCounter = new Transform({
         writableObjectMode: true,
 
         transform(chunk, _, callback) {
-            // console.log('chunk : ', chunk)
-
-            console.log(listWorld)
 
             if (chunk.matching_rules) {
                 switch (chunk.matching_rules[0].tag) {
-                    /* case 'love' :
-                        this.counterLove ++
-                        break */
                     case 'hate' :
                         this.counterHate ++
                         break
-                    case `${listWorld}` :
+                    case `${listWords[0]}` :
+                        this.counterLove ++
+                        break
+                    case `${listWords[1]}` :
+                        this.counterLove ++
+                        break
+                    case `${listWords[2]}` :
                         this.counterLove ++
                         break
                 }
@@ -128,8 +132,8 @@ async function resetRules() {
     await addSearchRules([
         { value: "detest", tag: "hate"},
         { value: "wimp", tag: "hate"},
-        { value: "crap", tag: "hate"}, /*
-        { value: "fuck", tag: "hate"},
+        { value: "crap", tag: "hate"},
+        { value: "fuck", tag: "hate"}, /*
         { value: "fucking", tag: "hate"},
         { value: "hate", tag: "hate"},
         { value: "shit", tag: "hate"},

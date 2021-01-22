@@ -43,21 +43,34 @@
 				love.innerHTML = data.love
 				const hate = document.querySelector('.js-hate')
 				hate.innerHTML = data.hate
-				console.log("server message: ", data)
+				// console.log("server message: ", data)
 			} catch(err){
 			}
 		});
 
 		socket.addEventListener('open', function (event) {
-			console.log('connected', event)
+			// console.log('connected', event)
 			// socket.send('Hello from client')
 		});
 
 		const buttons = document.querySelectorAll('.js-btn')
+		let list = []
 
 		buttons.forEach((button) => {
 			button.addEventListener('click', () => {
-				socket.send(button.dataset.value)
+				if (!button.classList.contains('select')) {
+					button.classList.add('select')
+					if (list[list.length-3]) {
+						const unselect = list[list.length-3]
+						document.querySelector(`[data-value='${unselect}']`).classList.remove('select')
+					}
+					list.push(button.dataset.value)
+					let tab = []
+					for (let i = list.length-1; i > list.length - 4; i--) {
+						tab.push(list[i])
+					}
+					socket.send(tab)
+				}
 			})
 		})
 
