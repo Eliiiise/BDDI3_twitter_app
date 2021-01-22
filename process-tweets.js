@@ -1,4 +1,4 @@
-const { Writable, Transform } = require('stream')
+const { Writable, Transform, Readable } = require('stream')
 
 const jsonParser = new Transform({
     readableObjectMode: true,
@@ -15,20 +15,48 @@ const jsonParser = new Transform({
     }
 })
 
-function initCounter() {
+function getTweetFromSource(broadcaster) {
+    // create a new source stream for each client
+    const tweetSource = new Readable({
+        objectMode: true,
+        read() { }
+    })
+
+    // data event callback
+    function pushToSource(chunk) {
+        tweetSource.push(chunk)
+    }
+
+    // listen to new data from main pipeline and push it to client stream
+    broadcaster.on("data", pushToSource)
+
+    // remove event listener if error, emitted from client pipeline
+    tweetSource.on("error", () => {
+        broadcaster.off("data", pushToSource)
+    })
+
+    return tweetSource
+}
+
+function initCounter(listCounter) {
     const tweetCounter = new Transform({
         writableObjectMode: true,
 
         transform(chunk, _, callback) {
             // console.log('chunk : ', chunk)
 
+            console.log(listCounter)
+
             if (chunk.matching_rules) {
                 switch (chunk.matching_rules[0].tag) {
-                    case 'love' :
+                    /* case 'love' :
                         this.counterLove ++
-                        break
+                        break */
                     case 'hate' :
                         this.counterHate ++
+                        break
+                    case `${listCounter}` :
+                        this.counterLove ++
                         break
                 }
             }
@@ -103,5 +131,6 @@ module.exports = {
     jsonParser,
     textExtractor,
     initCounter,
-    textSelector
+    textSelector,
+    getTweetFromSource
 }
