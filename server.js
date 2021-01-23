@@ -8,10 +8,8 @@ server.on("request", async (request, response) => {
 
     if (request.url === "/") {
         makeResponse('index.html', response)
-    } else if (request.url === "/main.css") {
-        makeResponse('main.css', response)
-    } else if (request.url === "/main.js") {
-        makeResponse('main.js', response)
+    } else if (request.url) {
+        makeResponse(request.url, response)
     } else {
         response.writeHead(404)
         response.end()

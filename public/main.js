@@ -7,9 +7,20 @@ socket.addEventListener('message', async function (event) {
 
         const love = document.querySelector('.js-love')
         const hate = document.querySelector('.js-hate')
+        const lovePart = document.querySelector('.js-love-part')
+        const hatePart = document.querySelector('.js-hate-part')
+        const titleLove = document.querySelector('.js-title-love')
+        const titleHate = document.querySelector('.js-title-hate')
 
-        hate.innerHTML = data.hate
-        love.innerHTML = data.love
+        love.innerHTML = Math.round(( data.love * 100 ) / ( data.hate + data.love )) + '%'
+        hate.innerHTML = Math.round(( data.hate * 100 ) / ( data.hate + data.love )) + '%'
+
+        lovePart.style.width = ( data.love * 40 ) / ( data.hate + data.love ) + 30 + '%'
+        hatePart.style.width = ( data.hate * 40 ) / ( data.hate + data.love ) + 30 + '%'
+
+        titleLove.style.transform = `scale(${( data.love * 0.4 ) / ( data.hate + data.love ) + 0.6})`
+        titleHate.style.transform = `scale(${( data.hate * 0.4 ) / ( data.hate + data.love ) + 0.6})`
+
     } catch(err){
     }
 });

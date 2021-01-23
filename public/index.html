@@ -4,32 +4,66 @@
 		<meta charset="UTF-8" />
 		<title>Twitter App</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="./main.css" rel="stylesheet">
+		<link href="./css/reset.css" rel="stylesheet">
+		<link href="./css/main.css" rel="stylesheet">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
 	</head>
 	<body>
-	<h1>love VS hate</h1>
-	<div>
-		<h3>Love</h3>
-		<p class="js-love">0</p>
-		<button class="js-btn" data-value="love" type="button">
-			love
-		</button>
-		<button class="js-btn" data-value="passion" type="button">
-			passion
-		</button>
-		<button class="js-btn" data-value="lust" type="button">
-			lust
-		</button>
-		<button class="js-btn" data-value="amour" type="button">
-			amour
-		</button>
-		<button class="js-btn" data-value="crush" type="button">
-			crush
-		</button>
-	</div>
-	<div>
-		<h3>Hate</h3>
-		<p class="js-hate">0</p>
+	<div class="container">
+		<div class="hate-part js-hate-part">
+			<div></div>
+			<div class="title js-title-hate">
+				<h3>Hate</h3>
+				<p class="js-hate">50%</p>
+			</div>
+			<div class="buttons">
+				<button class="btn" type="button">
+					detest
+				</button>
+				<button class="btn" type="button">
+					wimp
+				</button>
+				<button class="btn" type="button">
+					crap
+				</button>
+				<button class="btn" type="button">
+					fuck
+				</button>
+				<button class="btn" type="button">
+					fucking
+				</button>
+				<button class="btn" type="button">
+					hate
+				</button>
+			</div>
+		</div>
+
+		<div class="love-part js-love-part">
+			<div></div>
+			<div class="title js-title-love">
+				<h3>Love</h3>
+				<p class="js-love">50%</p>
+			</div>
+			<div class="instruction"><b>Choose 3 words</b> in this list to win love over hate</div>
+			<div class="buttons">
+				<button class="btn js-btn" data-value="love" type="button">
+					love
+				</button>
+				<button class="btn js-btn" data-value="passion" type="button">
+					passion
+				</button>
+				<button class="btn js-btn" data-value="lust" type="button">
+					lust
+				</button>
+				<button class="btn js-btn" data-value="amour" type="button">
+					amour
+				</button>
+				<button class="btn js-btn" data-value="crush" type="button">
+					crush
+				</button>
+			</div>
+		</div>
 	</div>
 	</body>
 
