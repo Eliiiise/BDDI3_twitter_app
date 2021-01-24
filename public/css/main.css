@@ -57,7 +57,7 @@
 .container > div > div:nth-child(1) {
     position: absolute;
     bottom: 0;
-    height: 50%;
+    height: 60%;
     width: 100%;
 }
 
@@ -83,7 +83,7 @@
     align-items: baseline;
     width: 100%;
     position: absolute;
-    bottom: calc(50vh - 30px);
+    bottom: calc(60vh - 30px);
     z-index: 10;
     transform-origin: bottom;
 }
@@ -102,6 +102,10 @@ h3 {
 .instruction {
     z-index: 10;
     color: #FFCFC4;
+    text-align: center;
+    padding: 0 20px;
+    width: 60%;
+    line-height: 1.2;
 }
 
 .instruction b {

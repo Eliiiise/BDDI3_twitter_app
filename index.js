@@ -26,8 +26,6 @@ wsServer.on("connection", (client) => {
     const tweetSource = getTweetFromSource(broadcaster)
 
     client.on("message", (message) => {
-        // console.log("message from client: ", message)
-        // client.send('Hello from server')
 
         listWords = Array(3)
 
@@ -42,7 +40,6 @@ wsServer.on("connection", (client) => {
         writableObjectMode: true,
 
         transform(chunk, _, callback) {
-            // console.log(chunk, this.counterHate)
 
             let word = ''
 
@@ -52,10 +49,6 @@ wsServer.on("connection", (client) => {
                         this.counterHate ++
                         word = 'detest'
                         break
-                    case 'wimp' :
-                        this.counterHate ++
-                        word = 'wimp'
-                        break
                     case 'crap' :
                         this.counterHate ++
                         word = 'crap'
@@ -63,6 +56,26 @@ wsServer.on("connection", (client) => {
                     case 'fuck' :
                         this.counterHate ++
                         word = 'fuck'
+                        break
+                    case 'fucking' :
+                        this.counterHate ++
+                        word = 'fucking'
+                        break
+                    case 'hate' :
+                        this.counterHate ++
+                        word = 'hate'
+                        break
+                    case 'break' :
+                        this.counterHate ++
+                        word = 'break'
+                        break
+                    case 'damn' :
+                        this.counterHate ++
+                        word = 'damn'
+                        break
+                    case 'shit' :
+                        this.counterHate ++
+                        word = 'shit'
                         break
                     case `${listWords[0]}` :
                         this.counterLove ++
@@ -78,8 +91,6 @@ wsServer.on("connection", (client) => {
                         break
                 }
             }
-
-            // console.log('love : ', this.counterLove, '   |    hate : ', this.counterHate)
 
             const counters = {
                 'love': this.counterLove,
@@ -151,12 +162,16 @@ async function resetRules() {
 
     await addSearchRules([
         { value: "detest", tag: "detest"},
-        { value: "wimp", tag: "wimp"},
         { value: "crap", tag: "crap"},
         { value: "fuck", tag: "fuck"},
         { value: "fucking", tag: "hate"},
+        { value: "break", tag: "break"},
+        { value: "damn", tag: "damn"},
+        { value: "shit", tag: "shit"},
         { value: "hate", tag: "hate"},
         { value: "love", tag: "love"},
+        { value: "kiss", tag: "kiss"},
+        { value: "flirt", tag: "flirt"},
         { value: "passion", tag: "passion"},
         { value: "lust", tag: "lust"},
         { value: "amour", tag: "amour"},

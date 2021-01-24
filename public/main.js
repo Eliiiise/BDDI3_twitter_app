@@ -1,4 +1,7 @@
 const socket = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`);
+const buttons = document.querySelectorAll('button')
+const buttonsLove = document.querySelectorAll('.js-btn')
+let list = []
 
 socket.addEventListener('message', async function (event) {
     try{
@@ -30,19 +33,6 @@ socket.addEventListener('message', async function (event) {
                 span.innerHTML =  '💜'
             }
             wordButton.appendChild(span)
-
-            setTimeout(() => {
-                const childs = wordButton.childNodes
-
-                childs.forEach((child) => {
-                    if (child !== span && child !== wordButton.childNodes[0]) {
-                        child.remove()
-                    } else {
-                        return
-                    }
-                })
-
-            }, 3000)
         }
 
     } catch(err){
@@ -54,10 +44,7 @@ socket.addEventListener('open', function (event) {
     // socket.send('Hello from client')
 });
 
-const buttons = document.querySelectorAll('.js-btn')
-let list = []
-
-buttons.forEach((button) => {
+buttonsLove.forEach((button) => {
     button.addEventListener('click', () => {
 
         if (!button.classList.contains('select')) {
@@ -92,3 +79,13 @@ buttons.forEach((button) => {
         socket.send(SelectedWords)
     })
 })
+
+setInterval(() => {
+    buttons.forEach((button) => {
+        const buttonContent = button.childNodes
+        for (let i = 1; i < buttonContent.length - 5; i++) {
+            buttonContent[i].remove()
+        }
+    })
+
+}, 800)
