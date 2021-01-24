@@ -1,4 +1,4 @@
-const { Writable, Transform, Readable } = require('stream')
+const { Transform, Readable } = require('stream')
 
 const jsonParser = new Transform({
     readableObjectMode: true,
@@ -36,50 +36,6 @@ function getTweetFromSource(broadcaster) {
     })
 
     return tweetSource
-}
-
-function initCounter(listCounter) {
-    const tweetCounter = new Transform({
-        writableObjectMode: true,
-
-        transform(chunk, _, callback) {
-            // console.log('chunk : ', chunk)
-
-            console.log(listCounter)
-
-            if (chunk.matching_rules) {
-                switch (chunk.matching_rules[0].tag) {
-                    /* case 'love' :
-                        this.counterLove ++
-                        break */
-                    case 'hate' :
-                        this.counterHate ++
-                        break
-                    case `${listCounter}` :
-                        this.counterLove ++
-                        break
-                }
-            }
-
-            this.counter ++
-
-            // console.log('love : ', this.counterLove, '   |    hate : ', this.counterHate)
-
-            const counters = {
-                'love': this.counterLove,
-                'hate': this.counterHate
-            }
-
-            this.push(JSON.stringify(counters))
-
-            callback()
-        }
-    })
-
-    tweetCounter.counterLove = 0
-    tweetCounter.counterHate = 0
-
-    return tweetCounter
 }
 
 const textExtractor = new Transform({
@@ -130,7 +86,6 @@ const textSelector = new Transform({
 module.exports = {
     jsonParser,
     textExtractor,
-    initCounter,
     textSelector,
     getTweetFromSource
 }

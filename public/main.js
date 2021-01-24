@@ -11,6 +11,7 @@ socket.addEventListener('message', async function (event) {
         const hatePart = document.querySelector('.js-hate-part')
         const titleLove = document.querySelector('.js-title-love')
         const titleHate = document.querySelector('.js-title-hate')
+        const wordButton = document.querySelector(`[data-value='${data.word}']`)
 
         love.innerHTML = Math.round(( data.love * 100 ) / ( data.hate + data.love )) + '%'
         hate.innerHTML = Math.round(( data.hate * 100 ) / ( data.hate + data.love )) + '%'
@@ -20,6 +21,29 @@ socket.addEventListener('message', async function (event) {
 
         titleLove.style.transform = `scale(${( data.love * 0.4 ) / ( data.hate + data.love ) + 0.6})`
         titleHate.style.transform = `scale(${( data.hate * 0.4 ) / ( data.hate + data.love ) + 0.6})`
+
+        if (wordButton) {
+            span = document.createElement('span')
+            if (wordButton.parentElement.parentElement === lovePart) {
+                span.innerHTML =  '❤️'
+            } else {
+                span.innerHTML =  '💜'
+            }
+            wordButton.appendChild(span)
+
+            setTimeout(() => {
+                const childs = wordButton.childNodes
+
+                childs.forEach((child) => {
+                    if (child !== span && child !== wordButton.childNodes[0]) {
+                        child.remove()
+                    } else {
+                        return
+                    }
+                })
+
+            }, 3000)
+        }
 
     } catch(err){
     }

@@ -92,6 +92,27 @@ h3 {
     font-size: 16px;
     background-color: rgba(0, 0, 0, 0);
     outline: none;
+    position: relative;
+}
+
+.btn span {
+    position: absolute;
+    font-size: 10px;
+    top: 0;
+    left: 0;
+    right: 0;
+    animation: 3s goUp;
+    opacity: 0;
+}
+
+@-webkit-keyframes goUp {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-30px) scale(2);
+    }
 }
 
 .love-part .btn {

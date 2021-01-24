@@ -4,7 +4,7 @@ const { pipeline, PassThrough, Transform } = require("stream")
 const WebSocket = require("ws")
 const  server  = require("./server")
 const { connectToTwitter, tweetStream } = require("./twitter")
-const {jsonParser, textExtractor, textSelector, initCounter, getTweetFromSource } = require("./process-tweets")
+const {jsonParser, textExtractor, textSelector, getTweetFromSource } = require("./process-tweets")
 const { getSearchRules, addSearchRules, deleteSearchRules} = require('./search-rules')
 
 
@@ -29,6 +29,8 @@ wsServer.on("connection", (client) => {
         // console.log("message from client: ", message)
         // client.send('Hello from server')
 
+        listWords = Array(3)
+
         message = message.split(',')
 
         for (let i = 0; i < message.length; i++) {
@@ -40,31 +42,49 @@ wsServer.on("connection", (client) => {
         writableObjectMode: true,
 
         transform(chunk, _, callback) {
+            // console.log(chunk, this.counterHate)
+
+            let word = ''
 
             if (chunk.matching_rules) {
                 switch (chunk.matching_rules[0].tag) {
-                    case 'hate' :
+                    case 'detest' :
                         this.counterHate ++
+                        word = 'detest'
+                        break
+                    case 'wimp' :
+                        this.counterHate ++
+                        word = 'wimp'
+                        break
+                    case 'crap' :
+                        this.counterHate ++
+                        word = 'crap'
+                        break
+                    case 'fuck' :
+                        this.counterHate ++
+                        word = 'fuck'
                         break
                     case `${listWords[0]}` :
                         this.counterLove ++
+                        word = listWords[0]
                         break
                     case `${listWords[1]}` :
                         this.counterLove ++
+                        word = listWords[1]
                         break
                     case `${listWords[2]}` :
                         this.counterLove ++
+                        word = listWords[2]
                         break
                 }
             }
-
-            this.counter ++
 
             // console.log('love : ', this.counterLove, '   |    hate : ', this.counterHate)
 
             const counters = {
                 'love': this.counterLove,
-                'hate': this.counterHate
+                'hate': this.counterHate,
+                'word' : word
             }
 
             this.push(JSON.stringify(counters))
@@ -130,15 +150,15 @@ async function resetRules() {
     }
 
     await addSearchRules([
-        { value: "detest", tag: "hate"},
-        { value: "wimp", tag: "hate"},
-        { value: "crap", tag: "hate"},
-        { value: "fuck", tag: "hate"}, /*
+        { value: "detest", tag: "detest"},
+        { value: "wimp", tag: "wimp"},
+        { value: "crap", tag: "crap"}, /*
+        { value: "fuck", tag: "fuck"},
         { value: "fucking", tag: "hate"},
         { value: "hate", tag: "hate"},
         { value: "shit", tag: "hate"},
-        { value: "bastard", tag: "hate"}, */
-        { value: "love", tag: "love"},
+        { value: "bastard", tag: "hate"},
+        { value: "love", tag: "love"}, */
         { value: "passion", tag: "passion"},
         { value: "lust", tag: "lust"},
         { value: "amour", tag: "amour"},
