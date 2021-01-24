@@ -152,13 +152,11 @@ async function resetRules() {
     await addSearchRules([
         { value: "detest", tag: "detest"},
         { value: "wimp", tag: "wimp"},
-        { value: "crap", tag: "crap"}, /*
+        { value: "crap", tag: "crap"},
         { value: "fuck", tag: "fuck"},
         { value: "fucking", tag: "hate"},
         { value: "hate", tag: "hate"},
-        { value: "shit", tag: "hate"},
-        { value: "bastard", tag: "hate"},
-        { value: "love", tag: "love"}, */
+        { value: "love", tag: "love"},
         { value: "passion", tag: "passion"},
         { value: "lust", tag: "lust"},
         { value: "amour", tag: "amour"},
