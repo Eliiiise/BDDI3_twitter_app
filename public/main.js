@@ -39,11 +39,6 @@ socket.addEventListener('message', async function (event) {
     }
 });
 
-socket.addEventListener('open', function (event) {
-    // console.log('connected', event)
-    // socket.send('Hello from client')
-});
-
 buttonsLove.forEach((button) => {
     button.addEventListener('click', () => {
 
@@ -80,6 +75,8 @@ buttonsLove.forEach((button) => {
     })
 })
 
+
+// remove span with heart
 setInterval(() => {
     buttons.forEach((button) => {
         const buttonContent = button.childNodes

@@ -1,5 +1,5 @@
 const http = require("https")
-const { Writable, Readable, pipeline, Transform } = require("stream")
+const { Readable } = require("stream")
 
 const TWT_API_HOST = "api.twitter.com"
 const TWT_API_SEARCH_PATH = "/2/tweets/search/stream?tweet.fields=attachments&expansions=attachments.media_keys&media.fields=url"

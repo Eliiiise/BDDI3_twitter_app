@@ -4,9 +4,8 @@ const { pipeline, PassThrough, Transform } = require("stream")
 const WebSocket = require("ws")
 const  server  = require("./server")
 const { connectToTwitter, tweetStream } = require("./twitter")
-const {jsonParser, textExtractor, textSelector, getTweetFromSource } = require("./process-tweets")
+const {jsonParser, getTweetFromSource } = require("./process-tweets")
 const { getSearchRules, addSearchRules, deleteSearchRules} = require('./search-rules')
-
 
 server.listen(3000)
 const wsServer = new WebSocket.Server({ server })
@@ -18,7 +17,6 @@ const broadcaster = new PassThrough({
 })
 
 wsServer.on("connection", (client) => {
-    // console.log('new connection: ', client)
 
     let listWords = Array(3)
 
@@ -110,11 +108,7 @@ wsServer.on("connection", (client) => {
     const socketStream = WebSocket.createWebSocketStream(client)
 
     pipeline(
-        //tweetStream,
         tweetSource,
-        // jsonParser,
-        // textExtractor,
-        // textSelector,
         tweetCounter,
         socketStream,
         (err) => {
@@ -140,15 +134,12 @@ connectToTwitter()
 pipeline(
     tweetStream,
     jsonParser,
-    // add here what transform you want for ALL clients
-    // remember to set objectMode when needed
     broadcaster,
     (err) => {
         console.log("main pipeline ended")
         if (err) {
             console.error("main pipeline error: ", err)
         }
-        console.log(tweetStream)
     }
 )
 
