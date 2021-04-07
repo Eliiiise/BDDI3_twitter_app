@@ -7,7 +7,7 @@ const { connectToTwitter, tweetStream } = require("./twitter")
 const {jsonParser, getTweetFromSource } = require("./process-tweets")
 const { getSearchRules, addSearchRules, deleteSearchRules} = require('./search-rules')
 
-server.listen(3000)
+server.listen(process.env.PORT || 3000)
 const wsServer = new WebSocket.Server({ server })
 
 // create a passthrough: a transform that does nothing, just passing data through

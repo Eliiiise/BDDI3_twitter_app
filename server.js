@@ -4,8 +4,6 @@ const fs = require("fs/promises")
 const server = createServer()
 
 server.on("request", async (request, response) => {
-    console.log("on request", request.method, request.url)
-
     if (request.url === "/") {
         makeResponse('index.html', response)
     } else if (request.url) {
